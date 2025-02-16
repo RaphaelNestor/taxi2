@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3 uid="uid://duewppwa8vu87"]
+
+[ext_resource type="Script" path="res://scripts_et_scenes/main.gd" id="1_67f3v"]
+[ext_resource type="Texture2D" uid="uid://lk7vemy1jhxv" path="res://assets/graph/diode_petite.png" id="2_rcn8h"]
+[ext_resource type="Texture2D" uid="uid://cvg61uxevth2w" path="res://assets/graph/bouton1.png" id="3_e4c1v"]
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("del_eteint", "del_allume")]
+script = ExtResource("1_67f3v")
+del_eteint = NodePath("Eteint")
+del_allume = NodePath("Allume")
+
+[node name="Eteint" type="Timer" parent="."]
+
+[node name="Allume" type="Timer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_right = 277.0
+offset_bottom = 23.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="attente_act" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "attente actuelle : "
+
+[node name="attente_max" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "attente max : "
+
+[node name="niveau" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "niveau : "
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 527.0
+offset_top = 229.0
+offset_right = 527.0
+offset_bottom = 252.0
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="diode" type="TextureRect" parent="VBoxContainer/CenterContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_rcn8h")
+stretch_mode = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="bouton" type="Button" parent="VBoxContainer/CenterContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+icon = ExtResource("3_e4c1v")
+
+[connection signal="timeout" from="Eteint" to="." method="_on_attente_timeout"]
+[connection signal="timeout" from="Allume" to="." method="_on_allume_timeout"]
