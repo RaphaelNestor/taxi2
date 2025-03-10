@@ -1,34 +1,25 @@
-[gd_scene load_steps=5 format=3 uid="uid://duewppwa8vu87"]
+[gd_scene load_steps=4 format=3 uid="uid://duewppwa8vu87"]
 
 [ext_resource type="Script" path="res://scripts_et_scenes/main.gd" id="1_67f3v"]
 [ext_resource type="Texture2D" uid="uid://lk7vemy1jhxv" path="res://assets/graph/diode_petite.png" id="2_rcn8h"]
 [ext_resource type="Texture2D" uid="uid://cvg61uxevth2w" path="res://assets/graph/bouton1.png" id="3_e4c1v"]
-[ext_resource type="Texture2D" uid="uid://de32elgeqpa6d" path="res://assets/graph/pas_content.png" id="4_ypcoc"]
 
-[node name="Main" type="Node" node_paths=PackedStringArray("del_eteint", "del_allume", "del_puni", "diode", "bouton", "label_attente_act", "label_attente_max", "label_niv", "label_direct", "feedback_visuel")]
+[node name="Main" type="Node" node_paths=PackedStringArray("del_eteint", "del_allume", "diode", "bouton", "label_attente_act", "label_attente_max", "label_niveau")]
 script = ExtResource("1_67f3v")
 del_eteint = NodePath("Eteint")
 del_allume = NodePath("Allume")
-del_puni = NodePath("Punition")
 diode = NodePath("VBoxContainer/CenterContainer/VBoxContainer/MarginContainer/diode")
 bouton = NodePath("VBoxContainer/CenterContainer/VBoxContainer/MarginContainer2/bouton")
 label_attente_act = NodePath("VBoxContainer/HBoxContainer/attente_act")
 label_attente_max = NodePath("VBoxContainer/HBoxContainer/attente_max")
-label_niv = NodePath("VBoxContainer/HBoxContainer/niveau")
-label_direct = NodePath("VBoxContainer/HBoxContainer/duree_en_direct")
-feedback_visuel = NodePath("VBoxContainer/CenterContainer/Feedback")
-
-[node name="Punition" type="Timer" parent="."]
-one_shot = true
+label_niveau = NodePath("VBoxContainer/HBoxContainer/niveau")
 
 [node name="Eteint" type="Timer" parent="."]
-one_shot = true
 
 [node name="Allume" type="Timer" parent="."]
-one_shot = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 50.0
@@ -40,30 +31,20 @@ grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
-
-[node name="niveau" type="Label" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "niveau : "
-horizontal_alignment = 1
-
-[node name="attente_max" type="Label" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "attente max : "
-horizontal_alignment = 1
 
 [node name="attente_act" type="Label" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "attente actuelle : "
-horizontal_alignment = 1
 
-[node name="duree_en_direct" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="attente_max" type="Label" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-horizontal_alignment = 1
+text = "attente max : "
+
+[node name="niveau" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "niveau : "
 
 [node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -97,13 +78,6 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
-[node name="Feedback" type="TextureRect" parent="VBoxContainer/CenterContainer"]
-layout_mode = 2
-texture = ExtResource("4_ypcoc")
-
-[node name="FeedbackBouton" type="AudioStreamPlayer" parent="."]
-
-[connection signal="timeout" from="Punition" to="." method="_on_punition_timeout"]
-[connection signal="timeout" from="Eteint" to="." method="_eteint_timeout"]
-[connection signal="timeout" from="Allume" to="." method="_allume_timeout"]
+[connection signal="timeout" from="Eteint" to="." method="_allume_diode"]
+[connection signal="timeout" from="Allume" to="." method="_eteint_diode"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/VBoxContainer/MarginContainer2/bouton" to="." method="_on_bouton_pressed"]
