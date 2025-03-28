@@ -8,7 +8,7 @@ var allume = false
 
 @export var del_eteint : Node
 @export var del_allume : Node
-@export var del_puni : Node
+@export var del_feedback : Node
 
 @export var diode : Node
 @export var bouton : Node
@@ -19,6 +19,8 @@ var allume = false
 @export var label_direct : Node
 
 @export var feedback_visuel : Node
+@export var feedback_son_bouton : Node
+@export var feedback_son_diode : Node
 
 func _ready() -> void:
 	feedback_visuel.visible = false
@@ -55,7 +57,13 @@ func _eteindre_diode() -> void:
 	del_eteint.start()
 
 func _on_bouton_pressed() -> void:
+	feedback_son_bouton.play()
 	if allume == true :
+		feedback_visuel.texture = load("res://assets/graph/content.png")
+		feedback_visuel.visible = true
+		### feedback_son_diode = son_reussite ### à mettre à jour avec le son de réussite
+		### feedback_son_diode.play()
+		del_feedback.start()
 		del_allume.stop()
 		print("appuye")
 		label_niv.text = "niveau : " + str(niveau)
@@ -64,13 +72,14 @@ func _on_bouton_pressed() -> void:
 	else :
 		feedback_visuel.texture = load("res://assets/graph/pas_content.png")
 		feedback_visuel.visible = true
+		### feedback_son_diode = son_echec ### à mettre à jour avec le son d'echec
+		### feedback_son_diode.play()
+		del_feedback.start()
 		var nouveau_temps = ceil(del_eteint.time_left + niveau)
 		del_eteint.stop()
 		del_eteint.wait_time = nouveau_temps
 		del_eteint.start()
 		label_attente_act.text = "attente actuelle : " + str(nouveau_temps)
-		del_puni.start()
-		
 
 func _incrementation_temps() -> void:
 	niveau += 1
